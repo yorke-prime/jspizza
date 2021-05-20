@@ -1,0 +1,10 @@
+{
+    "files": [
+        "teste.ts"
+    ],
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "target": "ES5",
+        "allowJs": true
+    }
+}

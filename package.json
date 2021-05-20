@@ -1,0 +1,26 @@
+{
+  "name": "jspizza",
+  "version": "1.0.0",
+  "description": "",
+  "main": "pizzas.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yorke-prime/jspizza.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yorke-prime/jspizza/issues"
+  },
+  "homepage": "https://github.com/yorke-prime/jspizza#readme",
+  "devDependencies": {
+    "ts-loader": "^9.2.1",
+    "typescript": "^4.2.4",
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0"
+  }
+}
