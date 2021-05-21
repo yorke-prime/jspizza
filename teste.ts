@@ -64,6 +64,26 @@ function closeModal() {
     }, 500);
 }
 
+
 qs(".pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton").forEach((item) => {
     item.addEventListener("click", closeModal);
+});
+
+q(".pizzaInfo--qtmenos").addEventListener("click", () => {
+    if(modalQt > 1) {
+        modalQt--;
+    }
+    q('.pizzaInfo--qt').innerHTML = String(modalQt);
+});
+
+q(".pizzaInfo--qtmais").addEventListener("click", () => {
+    modalQt++;
+    q('.pizzaInfo--qt').innerHTML = String(modalQt);
+})
+
+qs(".pizzaInfo--size").forEach((size, sizeIndex) => {
+    size.addEventListener("click", (e) => {
+        q(".pizzaInfo--size.selected").classList.remove("selected");
+        size.classList.add("selected");
+    });
 });
