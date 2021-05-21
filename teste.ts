@@ -7,12 +7,23 @@ interface IPizzaDTO {
     description: string;
 }
 
-import {pizzaJson} from "./pizzas.js";
+interface ICartDTO {
+    indentifier: string;
+    id: number;
+    size: number;
+    qt: number;
+}
+
+import { pizzaJson } from "./pizzas.js";
 
 let modalQt = 0;
+let modalKey = 0;
+const cart: ICartDTO[] = [];
 
 const q = (el: string) => document.querySelector<HTMLInputElement>(el);
 const qs = (els: string) => document.querySelectorAll<HTMLInputElement>(els);
+
+
 
 pizzaJson.map((item: IPizzaDTO, index: number): void => {
     const pizza = document.querySelector(".models .pizza-item").cloneNode(true) as HTMLInputElement;
@@ -24,8 +35,8 @@ pizzaJson.map((item: IPizzaDTO, index: number): void => {
     pizza.querySelector(".pizza-item--desc").innerHTML = item.description;
     pizza.querySelector("a").addEventListener("click", (e) => {
         e.preventDefault();
- 
-        const key = e.target as HTMLElement ;
+
+        const key = e.target as HTMLElement;
         const cont = key.closest(".pizza-item").getAttribute("data-key");
         modalQt = 1;
 
@@ -37,7 +48,7 @@ pizzaJson.map((item: IPizzaDTO, index: number): void => {
         q(".pizzaInfo--actualPrice").innerHTML = `R$ ${pizzaInfo.price.toFixed(2)}`;
         q(".pizzaInfo--size.selected").classList.remove("selected");
         qs(".pizzaInfo--size").forEach((size, sizeIndex) => {
-            if( sizeIndex == 2 ) {
+            if (sizeIndex == 2) {
                 size.classList.add("selected");
             }
 
@@ -45,15 +56,20 @@ pizzaJson.map((item: IPizzaDTO, index: number): void => {
         });
         q('.pizzaInfo--qt').innerHTML = String(modalQt);
 
+
         q('.pizzaWindowArea').style.opacity = "0";
         q('.pizzaWindowArea').style.display = "flex";
         setTimeout(() => {
             q('.pizzaWindowArea')!.style.opacity = "1";
         }, 200);
-        
+        // ==============================================================
 
+       modalKey = index;
+            
+
+        
     });
-    
+
     q(".pizza-area").append(pizza);
 });
 
@@ -65,12 +81,13 @@ function closeModal() {
 }
 
 
+
 qs(".pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton").forEach((item) => {
     item.addEventListener("click", closeModal);
 });
 
 q(".pizzaInfo--qtmenos").addEventListener("click", () => {
-    if(modalQt > 1) {
+    if (modalQt > 1) {
         modalQt--;
     }
     q('.pizzaInfo--qt').innerHTML = String(modalQt);
@@ -87,3 +104,26 @@ qs(".pizzaInfo--size").forEach((size, sizeIndex) => {
         size.classList.add("selected");
     });
 });
+
+q(".pizzaInfo--addButton").addEventListener("click", () => {
+    const size = parseInt(q(".pizzaInfo--size.selected").getAttribute("data-key"));
+
+            const indentifier = pizzaJson[modalKey].id + "@" + size;
+
+            let key = cart.findIndex((item) => item.indentifier == indentifier);
+
+            if (key > -1) {
+                cart[key].qt += modalQt;
+            } else {
+                cart.push({
+                    indentifier,
+                    id: pizzaJson[modalKey].id,
+                    qt: modalQt,
+                    size
+                });
+            }
+
+            closeModal();
+            console.log(cart);
+        }
+);
