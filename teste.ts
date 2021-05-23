@@ -18,7 +18,7 @@ import { pizzaJson } from "./pizzas.js";
 
 let modalQt = 0;
 let modalKey = 0;
-const cart: ICartDTO[] = [];
+let cart: ICartDTO[] = [];
 
 const q = (el: string) => document.querySelector<HTMLInputElement>(el);
 const qs = (els: string) => document.querySelectorAll<HTMLInputElement>(els);
@@ -123,7 +123,50 @@ q(".pizzaInfo--addButton").addEventListener("click", () => {
                 });
             }
 
+            updateCart();   
             closeModal();
             console.log(cart);
         }
 );
+
+function updateCart() {
+    if(cart.length >= 1) {
+        q("aside").classList.add("show");
+        q(".cart").innerHTML = "";
+        for(let i in cart) {
+
+            let pizzaItem = pizzaJson.find((item) => item.id == cart[i].id );
+            const cartItem = q(".models .cart--item").cloneNode(true) as HTMLInputElement;
+
+            let pizzaSize;
+            switch(cart[i].size) {
+                case 0:
+                    pizzaSize = "P"
+                    break;
+                case 1:
+                    pizzaSize = "M"
+                    break;
+                case 2:
+                    pizzaSize = "G"
+                    break;
+            }
+            
+            cartItem.querySelector("img").src = pizzaItem.img;
+            cartItem.querySelector(".cart--item-nome").innerHTML = `${pizzaItem.name} (${pizzaSize})`;
+            cartItem.querySelector(".cart--item--qt").innerHTML = String(cart[i].qt);
+
+
+            q(".cart").append(cartItem);
+
+        }   
+    }else {
+        q("aside").classList.remove("show");
+    }
+}
+
+function teste() {
+    setTimeout(() => {
+        cart = [];
+        updateCart();
+    }, 1000);
+}
